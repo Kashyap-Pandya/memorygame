@@ -1,0 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap");
+
+body {
+	background-color: #ffdbc3;
+	/* background-color: #f3fde8; */
+	/* background-color: rgb(180, 180, 238); */
+	/* background-color: rgb(51, 47, 47); */
+	text-align: center;
+	font-size: 1.25em;
+	font-family: "Lato", sans-serif;
+	/* background-image: url("/images/bg-1.jpg"); */
+	/* background-blend-mode: lighten;
+	filter: brightness(-110%); */
+}
