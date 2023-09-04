@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import Card from "./Components/Card";
+import SetBackGround from "./Components/SetBackground";
 
 const Arr = [
 	{ src: "./images/earth-1.png", matched: false },
@@ -18,13 +19,17 @@ function App() {
 	const [turns, setTurns] = useState(0);
 	const [choiceOne, setChoiceOne] = useState(null);
 	const [choiceTwo, setChoiceTwo] = useState(null);
+	const [disabled, setDisabled] = useState(false);
 
 	const shuffleArray = () => {
 		const shuffledArr = [...Arr, ...Arr]
 			.sort(() => Math.random() - 0.5)
 			.map((img) => ({ ...img, id: Math.random() }));
+		setChoiceOne(null);
+		setChoiceTwo(null);
 		setCards(shuffledArr);
 		setTurns(0);
+		console.log(shuffledArr);
 	};
 
 	const handleChoice = (item) => {
@@ -35,44 +40,63 @@ function App() {
 		setChoiceOne(null);
 		setChoiceTwo(null);
 		setTurns((prevTurns) => prevTurns + 1);
+		setDisabled(false);
 	};
 
 	useEffect(() => {
 		if (choiceOne && choiceTwo) {
-			console.log(choiceOne, choiceTwo);
+			setDisabled(true);
 			if (choiceOne.src === choiceTwo.src) {
-				console.log("card matches");
+				setCards((prevCards) => {
+					return prevCards.map((card) => {
+						if (card.src === choiceOne.src) {
+							return { ...card, matched: true };
+						} else {
+							return card;
+						}
+					});
+				});
 				resetTurn();
 			} else {
-				console.log("card doesn't match");
-				resetTurn();
+				setTimeout(() => resetTurn(), 1000);
 			}
 		}
 		// resetTurn();
 	}, [choiceOne, choiceTwo]);
 
+	useEffect(() => {
+		shuffleArray();
+	}, []);
+
 	return (
-		<>
-			<main>
-				<h1>COSMOS</h1>
+		<main>
+			<h1>COSMOS</h1>
+			<div className='buttons'>
 				<button className='btn-game' onClick={shuffleArray}>
 					New Game
 				</button>
-				<h3>Turns : {turns}</h3>
+				<SetBackGround />
+			</div>
+			<h3>Turns : {turns}</h3>
 
-				<div className='game-grid'>
-					{cards.map((item) => {
-						return (
-							<Card
-								item={item}
-								key={item.id}
-								handleChoice={handleChoice}
-							/>
-						);
-					})}
-				</div>
-			</main>
-		</>
+			<div className='game-grid'>
+				{cards.map((item) => {
+					return (
+						<Card
+							item={item}
+							key={item.id}
+							handleChoice={handleChoice}
+							flipped={
+								item === choiceOne ||
+								item === choiceTwo ||
+								item.matched
+							}
+							disabled={disabled}
+						/>
+					);
+				})}
+			</div>
+		</main>
 	);
 }
 

@@ -1,14 +1,38 @@
 .item {
 	position: relative;
+	margin: 0 2rem 0 2rem;
 }
 
 .item img {
 	width: 100%;
 	display: block;
-	border: 2px solid #9d3f3f;
 	border-radius: 6px;
 }
 
-.img-cover {
-	display: hide;
+.item .front {
+	transform: rotateY(90deg);
+	position: absolute;
+	transition: all ease-in 0.2s;
+}
+
+.flipped .front {
+	transform: rotateY(0deg);
+	transition-delay: 0.2s;
+}
+
+.flipped .back {
+	transform: rotateY(90deg);
+	transition-delay: 0s;
+}
+
+.front {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 2.5rem;
+}
+
+.back {
+	border: 5px solid white;
 }
